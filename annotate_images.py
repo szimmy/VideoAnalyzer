@@ -22,7 +22,7 @@ def annotate(video_file, output_dir):
 
             BG_COLOR = (192, 192, 192) # gray
             with mp_pose.Pose(
-                static_image_mode=True,
+                static_image_mode=True, # TODO DO PERF TESTS WITH THIS SET TO FALSE!!!
                 model_complexity=2,
                 enable_segmentation=True,
                 min_detection_confidence=0.5) as pose:
@@ -41,6 +41,8 @@ def annotate(video_file, output_dir):
                 bg_image[:] = BG_COLOR
                 annotated_image = np.where(condition, annotated_image, bg_image)
                 # Draw pose landmarks on the image.
+                # TODO see https://stackoverflow.com/questions/75365431/mediapipe-display-body-landmarks-only
+                # to draw subset
                 mp_drawing.draw_landmarks(
                     annotated_image,
                     results.pose_landmarks,
